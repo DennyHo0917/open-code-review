@@ -436,3 +436,25 @@ func TestProviders_AllProtocolsCanonical(t *testing.T) {
 		}
 	}
 }
+
+func TestLookupProvider_ApiRouteDetails(t *testing.T) {
+	p, ok := LookupProvider("api-route")
+	if !ok {
+		t.Fatal("LookupProvider(\"api-route\") returned false, want true")
+	}
+	if p.DisplayName != "API Route" {
+		t.Errorf("DisplayName = %q, want %q", p.DisplayName, "API Route")
+	}
+	if p.Protocol != ProtocolOpenAIChatCompletions {
+		t.Errorf("Protocol = %q, want %q", p.Protocol, ProtocolOpenAIChatCompletions)
+	}
+	if p.BaseURL != "https://global.api-route.com/v1" {
+		t.Errorf("BaseURL = %q, want %q", p.BaseURL, "https://global.api-route.com/v1")
+	}
+	if p.EnvVar != "API_ROUTE_API_KEY" {
+		t.Errorf("EnvVar = %q, want %q", p.EnvVar, "API_ROUTE_API_KEY")
+	}
+	if p.AuthHeader != "" {
+		t.Errorf("AuthHeader = %q, want empty", p.AuthHeader)
+	}
+}

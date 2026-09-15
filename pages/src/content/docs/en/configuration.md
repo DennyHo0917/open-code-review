@@ -67,6 +67,7 @@ environment variable.
 | `siliconflow-cn`  | openai | `https://api.siliconflow.cn/v1` | `SILICONFLOW_API_KEY` |
 | `novita` | openai | `https://api.novita.ai/openai` | `NOVITA_API_KEY` |
 | `xai` | openai | `https://api.x.ai/v1` | `XAI_API_KEY` |
+| `api-route` | openai | `https://global.api-route.com/v1` | `API_ROUTE_API_KEY` |
 
 ### Overriding a built-in provider's Base URL
 
