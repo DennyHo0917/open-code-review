@@ -482,6 +482,22 @@ var registry = []Provider{
 			"mistral-small-latest",
 		},
 	},
+	{
+		Name:        "api-route",
+		DisplayName: "API Route",
+		Protocol:    ProtocolOpenAIChatCompletions,
+		BaseURL:     "https://global.api-route.com/v1",
+		EnvVar:      "API_ROUTE_API_KEY",
+		Models: []string{
+			"deepseek-ai/DeepSeek-V3",
+			"deepseek-ai/DeepSeek-R1",
+			"openai/gpt-5",
+			"openai/o3",
+			"anthropic/claude-3-7-sonnet",
+			"google/gemini-2.5-pro",
+			"qwen/qwen-2.5-72b-instruct",
+		},
+	},
 }
 
 var registryMap map[string]Provider

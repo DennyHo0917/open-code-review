@@ -76,7 +76,7 @@ func TestListProviders_Order(t *testing.T) {
 	if len(providers) < 3 {
 		t.Fatalf("expected at least 3 providers, got %d", len(providers))
 	}
-	expected := []string{"anthropic", "baidu-qianfan", "bedrock", "dashscope", "dashscope-tokenplan", "deepseek", "edenai", "gemini", "hy-tokenplan", "iflytek", "kimi", "kimi-global", "litellm", "mimo", "minimax", "minimax-cn", "mistral", "novita", "ollama-cloud", "openai", "openai-responses", "siliconflow", "siliconflow-cn", "tencent-tokenhub", "volcengine", "xai", "z-ai", "z-ai-coding"}
+	expected := []string{"anthropic", "api-route", "baidu-qianfan", "bedrock", "dashscope", "dashscope-tokenplan", "deepseek", "edenai", "gemini", "hy-tokenplan", "iflytek", "kimi", "kimi-global", "litellm", "mimo", "minimax", "minimax-cn", "mistral", "novita", "ollama-cloud", "openai", "openai-responses", "siliconflow", "siliconflow-cn", "tencent-tokenhub", "volcengine", "xai", "z-ai", "z-ai-coding"}
 	if len(providers) != len(expected) {
 		t.Fatalf("expected %d providers, got %d", len(expected), len(providers))
 	}
@@ -433,6 +433,45 @@ func TestProviders_AllProtocolsCanonical(t *testing.T) {
 		}
 		if err := ValidateProtocol(p.Protocol); err != nil {
 			t.Errorf("provider %q has non-canonical Protocol %q: %v", p.Name, p.Protocol, err)
+		}
+	}
+}
+
+func TestLookupProvider_ApiRouteDetails(t *testing.T) {
+	p, ok := LookupProvider("api-route")
+	if !ok {
+		t.Fatal("LookupProvider(\"api-route\") returned false, want true")
+	}
+	if p.DisplayName != "API Route" {
+		t.Errorf("DisplayName = %q, want %q", p.DisplayName, "API Route")
+	}
+	if p.Protocol != ProtocolOpenAIChatCompletions {
+		t.Errorf("Protocol = %q, want %q", p.Protocol, ProtocolOpenAIChatCompletions)
+	}
+	if p.BaseURL != "https://global.api-route.com/v1" {
+		t.Errorf("BaseURL = %q, want %q", p.BaseURL, "https://global.api-route.com/v1")
+	}
+	if p.EnvVar != "API_ROUTE_API_KEY" {
+		t.Errorf("EnvVar = %q, want %q", p.EnvVar, "API_ROUTE_API_KEY")
+	}
+	if p.AuthHeader != "" {
+		t.Errorf("AuthHeader = %q, want empty", p.AuthHeader)
+	}
+	expectedModels := []string{
+		"deepseek-ai/DeepSeek-V3",
+		"deepseek-ai/DeepSeek-R1",
+		"openai/gpt-5",
+		"openai/o3",
+		"anthropic/claude-3-7-sonnet",
+		"google/gemini-2.5-pro",
+		"qwen/qwen-2.5-72b-instruct",
+	}
+	if len(p.Models) != len(expectedModels) {
+		t.Fatalf("Models length = %d, want %d", len(p.Models), len(expectedModels))
+	}
+	for i, model := range expectedModels {
+		if p.Models[i] != model {
+			t.Errorf("Models[%d] = %q, want %q", i, p.Models[i], model)
 		}
 	}
 }
